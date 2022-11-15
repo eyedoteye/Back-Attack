@@ -23,9 +23,11 @@ func processJumpInput() -> void:
 		_stateMachine.travel("Jump")
 		velocity.y -= jumpStrength
 
-func processFalling() -> void:
-	if velocity.y > 0:
+func processFalling() -> bool:
+	if velocity.y != 0:
 		_stateMachine.travel("Jump")
+		return true
+	return false
 
 func applyMovement(delta) -> void:
 	velocity.y += gravity * delta
@@ -68,35 +70,35 @@ func _process(delta: float) -> void:
 	if Input.is_action_pressed("ui_right"):
 		dir += 1
 	
-	
 	var currentState =  _stateMachine.get_current_node()
 	match currentState:
 		"Jump":
 			processInAirDirMovement(dir)
 			
 			applyMovement(delta)
-			if is_on_floor() or velocity.y == 0:
+			if is_on_floor():
 				if dir == 0:
 					_stateMachine.travel("Idle")
 				else:
 					_stateMachine.travel("Run")
 		"Idle":
-			processJumpInput()
-			processFalling()
-			processDirMovement(dir)
-			
-			applyMovement(delta)
-			
-			flipSpriteToDir(dir)
-			if dir != 0:
-				_stateMachine.travel("Run")
+			if not processFalling():
+				processJumpInput()
+				processDirMovement(dir)
+				
+				applyMovement(delta)
+						
+				flipSpriteToDir(dir)
+				if dir != 0:
+					_stateMachine.travel("Run")
 		"Run":
-			processJumpInput()
-			processFalling()
-			processDirMovement(dir)
-			
-			applyMovement(delta)
-			
-			flipSpriteToDir(dir)
-			if dir == 0:
-				_stateMachine.travel("Idle")
+			if not processFalling():
+				processJumpInput()
+				processDirMovement(dir)
+				
+				applyMovement(delta)
+				
+				flipSpriteToDir(dir)
+				if dir == 0:
+					_stateMachine.travel("Idle")
+
