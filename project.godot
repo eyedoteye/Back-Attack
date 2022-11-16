@@ -8,6 +8,16 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "KinematicBody2D",
+"class": "Hero",
+"language": "GDScript",
+"path": "res://Scenes/Hero.gd"
+} ]
+_global_script_class_icons={
+"Hero": ""
+}
+
 [application]
 
 config/name="Backattack"
@@ -25,6 +35,10 @@ window/stretch/mode="2d"
 [gui]
 
 common/drop_mouse_on_gui_input_disabled=true
+
+[layer_names]
+
+2d_physics/layer_2="Pass Through"
 
 [physics]
 

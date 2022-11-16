@@ -1,5 +1,5 @@
 extends KinematicBody2D
-
+class_name Hero
 
 # Declare member variables here. Examples:
 # var a: int = 2
@@ -9,6 +9,7 @@ onready var _sprite = $Sprite
 onready var _animationTree = $AnimationTree
 onready var _stateMachine = _animationTree["parameters/playback"]
 
+onready var _itemSlash = $Slash
 
 var velocity = Vector2()
 var gravity = 200
@@ -18,10 +19,26 @@ var moveSpeed = 90
 func _ready() -> void:
 	pass # Replace with function body.
 
+func useSlash() -> void:
+	_itemSlash.visible = true
+	$Slash/CollisionShape2D.disabled = false
+	
+func finishSlash() -> void:
+	_itemSlash.visible = false
+	$Slash/CollisionShape2D.disabled = true
+	
+func changeStateTo(state) -> void:
+	_stateMachine.travel(state)
+
 func processJumpInput() -> void:
 	if Input.is_action_just_pressed("ui_accept"):
 		_stateMachine.travel("Jump")
 		velocity.y -= jumpStrength
+		
+func processUseInput() -> void:
+	if Input.is_action_just_pressed("ui_focus_next"):
+		velocity.x = 0
+		_stateMachine.travel("Throw")
 
 func processFalling() -> bool:
 	if velocity.y != 0:
@@ -86,6 +103,8 @@ func _process(delta: float) -> void:
 				processJumpInput()
 				processDirMovement(dir)
 				
+				processUseInput()
+				
 				applyMovement(delta)
 						
 				flipSpriteToDir(dir)
@@ -96,9 +115,16 @@ func _process(delta: float) -> void:
 				processJumpInput()
 				processDirMovement(dir)
 				
+				processUseInput()
+				
 				applyMovement(delta)
 				
 				flipSpriteToDir(dir)
 				if dir == 0:
 					_stateMachine.travel("Idle")
 
+
+
+func _on_Slash_area_entered(area):
+	if area.is_in_group("Enemy"):
+		area.get_parent().hurt()

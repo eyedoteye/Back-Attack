@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/_Death.png-468515defa5ea22b0b647e1fd94f0160.stex"
+path="res://.import/slashfx_spritesheet.png-1956de4724ade40d4712b7de122f4a8e.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Hero/_Death.png"
-dest_files=[ "res://.import/_Death.png-468515defa5ea22b0b647e1fd94f0160.stex" ]
+source_file="res://Assets/slashfx_spritesheet.png"
+dest_files=[ "res://.import/slashfx_spritesheet.png-1956de4724ade40d4712b7de122f4a8e.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2
