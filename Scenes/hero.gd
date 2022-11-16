@@ -50,7 +50,7 @@ func applyMovement(delta) -> void:
 	velocity.y += gravity * delta
 	velocity = move_and_slide(velocity, Vector2.UP)
 
-func processDirMovement(dir) -> void:
+func processDirMovement() -> void:
 	if dir > 0:
 		velocity.x = moveSpeed
 	elif dir < 0:
@@ -58,8 +58,8 @@ func processDirMovement(dir) -> void:
 	else:
 		velocity.x = 0
 
-func processInAirDirMovement(dir) -> void:
-	if _sprite.flip_h:
+func processInAirDirMovement() -> void:
+	if flipped == -1:
 		if dir > 0:
 			velocity.x = moveSpeed
 		elif dir < 0:
@@ -70,18 +70,30 @@ func processInAirDirMovement(dir) -> void:
 		elif dir < 0:
 			velocity.x = -moveSpeed
 
-func flipSpriteToDir(dir) -> void:
-	if dir == 1:
-		_sprite.flip_h = true
-	elif dir == -1:
-		_sprite.flip_h = false
+var flipped: int = 1
+func _flip() -> void:
+	scale.y = -1
+	rotation_degrees = 180
+	flipped = -1
+func _unflip() -> void:
+	scale.y = 1
+	rotation_degrees = 0
+	flipped = 1
 
+func flipSpriteToDir() -> void:
+	match dir:
+		1:
+			_flip()
+		-1:
+			_unflip()
+
+var dir: int = 0
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	velocity.y += gravity * delta
 	velocity = move_and_slide(velocity)
 	
-	var dir = 0
+	dir = 0
 	if Input.is_action_pressed("ui_left"):
 		dir -= 1
 	if Input.is_action_pressed("ui_right"):
@@ -90,7 +102,7 @@ func _process(delta: float) -> void:
 	var currentState =  _stateMachine.get_current_node()
 	match currentState:
 		"Jump":
-			processInAirDirMovement(dir)
+			processInAirDirMovement()
 			
 			applyMovement(delta)
 			if is_on_floor():
@@ -101,28 +113,27 @@ func _process(delta: float) -> void:
 		"Idle":
 			if not processFalling():
 				processJumpInput()
-				processDirMovement(dir)
+				processDirMovement()
 				
 				processUseInput()
 				
 				applyMovement(delta)
-						
-				flipSpriteToDir(dir)
+				
+				flipSpriteToDir()
 				if dir != 0:
 					_stateMachine.travel("Run")
 		"Run":
 			if not processFalling():
 				processJumpInput()
-				processDirMovement(dir)
+				processDirMovement()
 				
 				processUseInput()
 				
 				applyMovement(delta)
 				
-				flipSpriteToDir(dir)
+				flipSpriteToDir()
 				if dir == 0:
 					_stateMachine.travel("Idle")
-
 
 
 func _on_Slash_area_entered(area):

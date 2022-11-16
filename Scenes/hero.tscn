@@ -168,7 +168,7 @@ graph_offset = Vector2( -17, -219 )
 [sub_resource type="AnimationNodeStateMachinePlayback" id=10]
 
 [sub_resource type="RectangleShape2D" id=25]
-extents = Vector2( 8, 20 )
+extents = Vector2( 17, 20 )
 
 [node name="Hero" type="KinematicBody2D"]
 collision_layer = 0
@@ -211,7 +211,7 @@ hframes = 2
 vframes = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Slash"]
-position = Vector2( -26, 1 )
+position = Vector2( -17, 1 )
 shape = SubResource( 25 )
 disabled = true
 
