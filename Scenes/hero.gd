@@ -13,6 +13,7 @@ onready var _skillSlash = $Slash
 
 var dir: int = 0
 var flipped: int = 1
+var noGravity: bool = false
 
 var velocity = Vector2()
 var gravity = 200
@@ -21,18 +22,39 @@ var moveSpeed = 90
 
 onready var kunaiBase_position = $KunaiBase.position
 var _scene_kunai = preload("res://Scenes/Kunai.tscn")
+onready var superJumpBase_position = $SuperJumpBase.position
+var superJumpBase_height = 18
+var _scene_superJump = preload("res://Scenes/SuperJump.tscn")
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	$KunaiBase.queue_free()
 	pass # Replace with function body.	
 
 func useSlash() -> void:
+	print("f")
 	_skillSlash.visible = true
 	$Slash/CollisionShape2D.disabled = false
 	
 func finishSlash() -> void:
 	_skillSlash.visible = false
 	$Slash/CollisionShape2D.disabled = true
+
+func useSuperJump_1() -> void:
+	var newSuperJump = _scene_superJump.instance()
+	newSuperJump.position = position + superJumpBase_position
+	get_tree().get_root().add_child(newSuperJump)
+	var offset = Vector2(0, -superJumpBase_height)
+	move_and_slide(offset)
+	velocity.y -= 800
+	#noGravity = true
+
+func useSuperJump_2() -> void:
+	noGravity = true
+	velocity.y = 0
+	
+func finishSuperJump() -> void:
+	noGravity = false
+	changeStateTo("Jump")
 
 func useKunai() -> void:
 	var newKunai = _scene_kunai.instance()
@@ -58,7 +80,7 @@ func processJumpInput() -> void:
 func processUseInput() -> void:
 	if Input.is_action_just_pressed("ui_focus_next"):
 		velocity.x = 0
-		_stateMachine.travel("Throw")
+		changeStateTo("Slash")
 
 func processFalling() -> bool:
 	if velocity.y != 0:
@@ -107,7 +129,9 @@ func flipSpriteToDir() -> void:
 			_unflip()
 
 func _process(delta: float) -> void:
-	velocity.y += gravity * delta
+	if not noGravity:
+		velocity.y += gravity * delta
+		
 	velocity = move_and_slide(velocity)
 	
 	dir = 0

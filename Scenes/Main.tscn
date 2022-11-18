@@ -20,8 +20,9 @@ __meta__ = {
 }
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2( 0, 63 )
 __meta__ = {
-"_edit_lock_": true
+"_edit_group_": true
 }
 
 [node name="ColorRect" type="ColorRect" parent="StaticBody2D"]
@@ -37,12 +38,10 @@ __meta__ = {
 position = Vector2( 101, 223 )
 shape = SubResource( 1 )
 
-[node name="Dummy" parent="StaticBody2D/CollisionShape2D" instance=ExtResource( 2 )]
-position = Vector2( 211, -138 )
-
 [node name="StaticBody2D2" type="StaticBody2D" parent="."]
+position = Vector2( 0, 63 )
 __meta__ = {
-"_edit_lock_": true
+"_edit_group_": true
 }
 
 [node name="ColorRect" type="ColorRect" parent="StaticBody2D2"]
@@ -63,4 +62,7 @@ __meta__ = {
 }
 
 [node name="Hero" parent="." instance=ExtResource( 1 )]
-position = Vector2( 130, 148 )
+position = Vector2( 130, 211 )
+
+[node name="Dummy" parent="." instance=ExtResource( 2 )]
+position = Vector2( 312, 148 )
