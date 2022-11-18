@@ -9,23 +9,43 @@ onready var _sprite = $Sprite
 onready var _animationTree = $AnimationTree
 onready var _stateMachine = _animationTree["parameters/playback"]
 
-onready var _itemSlash = $Slash
+onready var _skillSlash = $Slash
+
+var dir: int = 0
+var flipped: int = 1
 
 var velocity = Vector2()
 var gravity = 200
 var jumpStrength = 200
 var moveSpeed = 90
+
+onready var kunaiBase_position = $KunaiBase.position
+var _scene_kunai = preload("res://Scenes/Kunai.tscn")
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	$KunaiBase.queue_free()
+	pass # Replace with function body.	
 
 func useSlash() -> void:
-	_itemSlash.visible = true
+	_skillSlash.visible = true
 	$Slash/CollisionShape2D.disabled = false
 	
 func finishSlash() -> void:
-	_itemSlash.visible = false
+	_skillSlash.visible = false
 	$Slash/CollisionShape2D.disabled = true
+
+func useKunai() -> void:
+	var newKunai = _scene_kunai.instance()
+	newKunai.direction = -flipped
+	if flipped == 1:
+		newKunai.position = position + kunaiBase_position
+	else:
+		newKunai.rotation_degrees = 180
+		newKunai.scale.y = -1
+		newKunai.position = position
+		newKunai.position.y += kunaiBase_position.y
+		newKunai.position.x -= kunaiBase_position.x
+	get_tree().get_root().add_child(newKunai)
 	
 func changeStateTo(state) -> void:
 	_stateMachine.travel(state)
@@ -70,7 +90,6 @@ func processInAirDirMovement() -> void:
 		elif dir < 0:
 			velocity.x = -moveSpeed
 
-var flipped: int = 1
 func _flip() -> void:
 	scale.y = -1
 	rotation_degrees = 180
@@ -87,8 +106,6 @@ func flipSpriteToDir() -> void:
 		-1:
 			_unflip()
 
-var dir: int = 0
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	velocity.y += gravity * delta
 	velocity = move_and_slide(velocity)
