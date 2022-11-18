@@ -25,12 +25,29 @@ var _scene_kunai = preload("res://Scenes/Kunai.tscn")
 onready var superJumpBase_position = $SuperJumpBase.position
 var superJumpBase_height = 18
 var _scene_superJump = preload("res://Scenes/SuperJump.tscn")
+
+class SkillQueue:
+	var skills = ["","",""]
+	var size = 0
+	func fill(skill1, skill2, skill3):
+		skills = [skill1, skill2, skill3]
+		size = 3
+	func pop() -> String:
+		if size > 0:
+			var s = skills[size - 1]
+			size = size - 1
+			return s
+		return "Slash"
+	func isEmpty() -> bool:
+		return size == 0
+var skillQueue = SkillQueue.new()
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	$KunaiBase.queue_free()
 	pass # Replace with function body.	
 
 func useSlash() -> void:
+	velocity.x = 0
 	_skillSlash.visible = true
 	$Slash/CollisionShape2D.disabled = false
 	
@@ -56,6 +73,7 @@ func finishSuperJump() -> void:
 	changeStateTo("Jump")
 
 func useKunai() -> void:
+	velocity.x = 0
 	var newKunai = _scene_kunai.instance()
 	newKunai.direction = -flipped
 	if flipped == 1:
@@ -78,8 +96,9 @@ func processJumpInput() -> void:
 		
 func processUseInput() -> void:
 	if Input.is_action_just_pressed("ui_focus_next"):
-		velocity.x = 0
-		changeStateTo("SuperJump")
+		if skillQueue.isEmpty():
+			skillQueue.fill("Slash", "SuperJump", "Kunai")
+		changeStateTo(skillQueue.pop())
 
 func processFalling() -> bool:
 	if velocity.y != 0:

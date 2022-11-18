@@ -55,6 +55,39 @@ tracks/0/keys = {
 "values": [ 18 ]
 }
 
+[sub_resource type="Animation" id=26]
+resource_name = "Kunai"
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 24 ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.12 ),
+"transitions": PoolRealArray( 1, 1 ),
+"values": [ {
+"args": [  ],
+"method": "useKunai"
+}, {
+"args": [ "Idle" ],
+"method": "changeStateTo"
+} ]
+}
+
 [sub_resource type="Animation" id=13]
 length = 0.001
 tracks/0/type = "value"
@@ -157,44 +190,14 @@ tracks/1/keys = {
 } ]
 }
 
-[sub_resource type="Animation" id=26]
-resource_name = "Throw"
-step = 0.01
-tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ 24 ]
-}
-tracks/1/type = "method"
-tracks/1/path = NodePath(".")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0, 0.12 ),
-"transitions": PoolRealArray( 1, 1 ),
-"values": [ {
-"args": [  ],
-"method": "useKunai"
-}, {
-"args": [ "Idle" ],
-"method": "changeStateTo"
-} ]
-}
-
 [sub_resource type="AnimationNodeAnimation" id=5]
 animation = "Idle"
 
 [sub_resource type="AnimationNodeAnimation" id=15]
 animation = "Jump"
+
+[sub_resource type="AnimationNodeAnimation" id=27]
+animation = "Kunai"
 
 [sub_resource type="AnimationNodeAnimation" id=6]
 animation = "Run"
@@ -204,9 +207,6 @@ animation = "Slash"
 
 [sub_resource type="AnimationNodeAnimation" id=31]
 animation = "SuperJump"
-
-[sub_resource type="AnimationNodeAnimation" id=27]
-animation = "Throw"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=7]
 
@@ -243,15 +243,15 @@ states/Idle/node = SubResource( 5 )
 states/Idle/position = Vector2( 262, 22 )
 states/Jump/node = SubResource( 15 )
 states/Jump/position = Vector2( 514, 162 )
+states/Kunai/node = SubResource( 27 )
+states/Kunai/position = Vector2( 241, -146 )
 states/Run/node = SubResource( 6 )
 states/Run/position = Vector2( 404, 15 )
 states/Slash/node = SubResource( 20 )
 states/Slash/position = Vector2( 461, -146 )
 states/SuperJump/node = SubResource( 31 )
 states/SuperJump/position = Vector2( 262, 162 )
-states/Throw/node = SubResource( 27 )
-states/Throw/position = Vector2( 241, -146 )
-transitions = [ "Idle", "Run", SubResource( 7 ), "Run", "Idle", SubResource( 8 ), "Run", "Jump", SubResource( 16 ), "Jump", "Run", SubResource( 17 ), "Jump", "Idle", SubResource( 18 ), "Idle", "Jump", SubResource( 19 ), "Idle", "Slash", SubResource( 21 ), "Slash", "Idle", SubResource( 22 ), "Idle", "Throw", SubResource( 28 ), "Throw", "Idle", SubResource( 29 ), "Idle", "SuperJump", SubResource( 32 ), "SuperJump", "Jump", SubResource( 33 ), "Run", "Slash", SubResource( 34 ), "Run", "SuperJump", SubResource( 35 ), "Run", "Throw", SubResource( 36 ) ]
+transitions = [ "Idle", "Run", SubResource( 7 ), "Run", "Idle", SubResource( 8 ), "Run", "Jump", SubResource( 16 ), "Jump", "Run", SubResource( 17 ), "Jump", "Idle", SubResource( 18 ), "Idle", "Jump", SubResource( 19 ), "Idle", "Slash", SubResource( 21 ), "Slash", "Idle", SubResource( 22 ), "Idle", "Kunai", SubResource( 28 ), "Kunai", "Idle", SubResource( 29 ), "Idle", "SuperJump", SubResource( 32 ), "SuperJump", "Jump", SubResource( 33 ), "Run", "Slash", SubResource( 34 ), "Run", "SuperJump", SubResource( 35 ), "Run", "Kunai", SubResource( 36 ) ]
 start_node = "Idle"
 graph_offset = Vector2( -17, -219 )
 
@@ -281,11 +281,11 @@ __meta__ = {
 anims/Idle = SubResource( 2 )
 anims/Jump = SubResource( 11 )
 "anims/Jump Throw" = SubResource( 12 )
+anims/Kunai = SubResource( 26 )
 anims/RESET = SubResource( 13 )
 anims/Run = SubResource( 4 )
 anims/Slash = SubResource( 14 )
 anims/SuperJump = SubResource( 30 )
-anims/Throw = SubResource( 26 )
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource( 9 )
