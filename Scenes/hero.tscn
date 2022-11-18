@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=2]
+[gd_scene load_steps=39 format=2]
 
 [ext_resource path="res://Assets/hero_spritesheet.png" type="Texture" id=1]
 [ext_resource path="res://Assets/slashfx_spritesheet.png" type="Texture" id=2]
@@ -232,20 +232,26 @@ animation = "Throw"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=33]
 
+[sub_resource type="AnimationNodeStateMachineTransition" id=34]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=35]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=36]
+
 [sub_resource type="AnimationNodeStateMachine" id=9]
 states/Idle/node = SubResource( 5 )
-states/Idle/position = Vector2( 332, 7 )
+states/Idle/position = Vector2( 262, 22 )
 states/Jump/node = SubResource( 15 )
-states/Jump/position = Vector2( 398, 134 )
+states/Jump/position = Vector2( 514, 162 )
 states/Run/node = SubResource( 6 )
-states/Run/position = Vector2( 521, 22 )
+states/Run/position = Vector2( 404, 15 )
 states/Slash/node = SubResource( 20 )
 states/Slash/position = Vector2( 461, -146 )
 states/SuperJump/node = SubResource( 31 )
-states/SuperJump/position = Vector2( 212, 90 )
+states/SuperJump/position = Vector2( 262, 162 )
 states/Throw/node = SubResource( 27 )
-states/Throw/position = Vector2( 131, -83 )
-transitions = [ "Idle", "Run", SubResource( 7 ), "Run", "Idle", SubResource( 8 ), "Run", "Jump", SubResource( 16 ), "Jump", "Run", SubResource( 17 ), "Jump", "Idle", SubResource( 18 ), "Idle", "Jump", SubResource( 19 ), "Idle", "Slash", SubResource( 21 ), "Slash", "Idle", SubResource( 22 ), "Idle", "Throw", SubResource( 28 ), "Throw", "Idle", SubResource( 29 ), "Idle", "SuperJump", SubResource( 32 ), "SuperJump", "Jump", SubResource( 33 ) ]
+states/Throw/position = Vector2( 241, -146 )
+transitions = [ "Idle", "Run", SubResource( 7 ), "Run", "Idle", SubResource( 8 ), "Run", "Jump", SubResource( 16 ), "Jump", "Run", SubResource( 17 ), "Jump", "Idle", SubResource( 18 ), "Idle", "Jump", SubResource( 19 ), "Idle", "Slash", SubResource( 21 ), "Slash", "Idle", SubResource( 22 ), "Idle", "Throw", SubResource( 28 ), "Throw", "Idle", SubResource( 29 ), "Idle", "SuperJump", SubResource( 32 ), "SuperJump", "Jump", SubResource( 33 ), "Run", "Slash", SubResource( 34 ), "Run", "SuperJump", SubResource( 35 ), "Run", "Throw", SubResource( 36 ) ]
 start_node = "Idle"
 graph_offset = Vector2( -17, -219 )
 

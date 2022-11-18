@@ -31,7 +31,6 @@ func _ready() -> void:
 	pass # Replace with function body.	
 
 func useSlash() -> void:
-	print("f")
 	_skillSlash.visible = true
 	$Slash/CollisionShape2D.disabled = false
 	
@@ -80,7 +79,7 @@ func processJumpInput() -> void:
 func processUseInput() -> void:
 	if Input.is_action_just_pressed("ui_focus_next"):
 		velocity.x = 0
-		changeStateTo("Slash")
+		changeStateTo("SuperJump")
 
 func processFalling() -> bool:
 	if velocity.y != 0:
@@ -100,15 +99,15 @@ func processDirMovement() -> void:
 	else:
 		velocity.x = 0
 
-func processInAirDirMovement() -> void:
+func processFixedFaceMovement(mod) -> void:
 	if flipped == -1:
 		if dir > 0:
 			velocity.x = moveSpeed
 		elif dir < 0:
-			velocity.x = -moveSpeed / 2.2
+			velocity.x = -moveSpeed / mod
 	else:
 		if dir > 0:
-			velocity.x = moveSpeed / 2.2
+			velocity.x = moveSpeed / mod
 		elif dir < 0:
 			velocity.x = -moveSpeed
 
@@ -142,8 +141,10 @@ func _process(delta: float) -> void:
 	
 	var currentState =  _stateMachine.get_current_node()
 	match currentState:
+		"SuperJump":
+			processFixedFaceMovement(4.4)
 		"Jump":
-			processInAirDirMovement()
+			processFixedFaceMovement(2.2)
 			
 			applyMovement(delta)
 			if is_on_floor():
